@@ -1,43 +1,140 @@
-# TrustLens
+# TrustLens — Progressive Hybrid AI Security
 
-TrustLens is a privacy-minded security investigation MVP for suspicious links and messages. It combines transparent local heuristics with an optional Firebase AI Logic explanation path. A heuristic result is a triage aid, not a guarantee that content is safe or malicious.
+**A privacy-conscious security platform designed to help users identify suspicious links, messages, websites, payment requests, and identity impersonation attempts.**
 
-## Current scope
+## Overview
 
-- LinkGuard investigates a URL without visiting it.
-- MessageGuard analyzes pasted message text.
-- SiteGuard, PayGuard, and IdentityGuard are workflow entry points backed by the shared investigation engine; their specialized detection is not yet implemented.
-- Evidence and risk scoring are deterministic and remain separate from generated explanations.
-- AI analysis requires an explicit action. Cloud fallback is separately opted into for each investigation. Raw inputs are not persisted by the app.
-- The web build does not include a Chrome extension or a threat-intelligence feed.
+TrustLens is a cybersecurity project built around a shared threat investigation engine. It combines deterministic security checks with a planned hybrid AI architecture to provide explainable security assessments.
 
-## Requirements
+The project currently focuses on its deterministic MVP foundation. Firebase AI Logic cloud inference and on-device inference remain under integration and verification.
 
-- Node.js 24 or later (the test script uses Node's built-in TypeScript stripping).
-- npm and a current Chrome desktop browser for the optional Prompt API path.
+## Security Modules
 
-## Local setup
+TrustLens is organized into five modules:
 
-1. Copy `.env.example` to `.env.local` and fill the Firebase web app configuration, a Firebase AI Logic model identifier, and a reCAPTCHA v3 site key.
-2. In Firebase Console, enable Firebase AI Logic and configure App Check for the web app. App Check enforcement and API availability must be verified in that project. Do not put a reCAPTCHA secret or debug token in client environment variables.
-3. Run `npm ci`, then `npm run dev`.
-4. Use LinkGuard or MessageGuard, review the deterministic evidence, and explicitly press the AI analysis action. Cloud fallback is off by default.
+| Module | Purpose |
+|---|---|
+| LinkGuard | Investigates suspicious URLs and links |
+| MessageGuard | Analyzes suspicious messages, phishing emails, and job offers |
+| SiteGuard | Helps identify suspicious websites and brand impersonation |
+| PayGuard | Examines suspicious payment requests |
+| IdentityGuard | Investigates potential identity impersonation and social engineering |
 
-For local development, use the documented opt-in App Check debug-token flow and register the generated token privately in Firebase Console. Firebase advises against adding `localhost` to a production reCAPTCHA key. Never commit or share the generated token, and do not ship a debug build. Do not enable paid billing or a paid quota without explicit project-owner approval.
+These modules use a shared investigation approach rather than five independent security engines.
 
-## Checks
+## Key Features Implemented
 
-```sh
+- React-based application interface.
+- Five security module entry points.
+- Shared deterministic security investigation engine.
+- Explainable security assessment foundation.
+- Local automated tests for deterministic logic.
+- Project documentation and implementation tracking.
+
+## Technology Stack
+
+- React
+- TypeScript
+- Vite
+- Firebase
+- Firebase AI Logic (integration in progress)
+- Chrome Prompt API / Gemini Nano (planned on-device inference)
+
+## Hybrid AI Architecture — Planned
+
+The intended architecture consists of:
+
+1. **Deterministic security layer:** Performs local security checks.
+2. **On-device AI:** Uses supported browser-based inference when available.
+3. **Cloud AI:** Uses Firebase AI Logic for cloud-based analysis.
+4. **Fallback and routing:** Selects an available inference path while respecting user privacy.
+5. **Explainability:** Presents supporting indicators and recommendations.
+
+The complete hybrid inference pipeline has not yet been verified.
+
+## Current Project Status
+
+### Completed and locally verified
+
+- React application foundation.
+- Five module entry points.
+- Shared deterministic security engine.
+- Nine deterministic tests passed in the latest reported test run.
+- ESLint checks passed.
+- TypeScript checks passed.
+- Production build passed.
+
+### In progress / blocked
+
+- Firebase App Check configuration and token acquisition.
+- Verified Gemini cloud inference.
+- Verified Chrome on-device inference.
+- End-to-end hybrid routing.
+- Production deployment and public demo.
+
+**Important:** Passing deterministic tests does not establish AI detection accuracy or prove that cloud and on-device inference work.
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js
+- npm
+- Git
+
+### Installation
+
+```bash
+git clone YOUR_REPOSITORY_URL
+cd trustlens-web
+npm install
+```
+
+### Environment Configuration
+
+Create a local `.env.local` file using the required Firebase configuration variables.
+
+Never commit `.env.local` or private credentials.
+
+### Run the Development Server
+
+```bash
+npm run dev
+```
+
+Open the localhost URL displayed by Vite.
+
+### Run Checks
+
+```bash
 npm run lint
 npx tsc -b
-npm run test
+npm test
 npm run build
 ```
 
-## Privacy and limitations
+## Project Documentation
 
-URL investigation parses the provided string locally and does not navigate to it or query reputation services. Message analysis uses local rules first. If AI is explicitly requested, the input is sent through Firebase AI Logic; with cloud fallback enabled, Firebase's hybrid mode may send content to the cloud when on-device inference is unavailable. The UI displays the reported inference source when provided by the SDK.
+Implementation history, audit reports, testing results, decisions, known issues, and progress records are maintained in:
 
-Heuristics can miss attacks and produce false alarms. A low score or no detected signals is inconclusive, not a safety verdict. This MVP does not inspect page contents, validate payment recipients, perform identity verification, or replace security review. Never paste passwords, payment credentials, or highly sensitive personal data.
+```text
+project_docs/
+```
 
-See `project_docs/` for architecture, decisions, threat model, test results, known issues, deployment notes, and hackathon readiness.
+See `project_docs/CURRENT_PROGRESS.md` for the latest project status.
+
+## Security and Privacy Principles
+
+- Treat external links and messages as untrusted input.
+- Never represent an unverified website or transaction as guaranteed safe.
+- Do not allow AI analysis to authorize payments or transactions.
+- Protect credentials and private configuration.
+- Preserve deterministic security checks when AI services are unavailable.
+
+## Current Limitations
+
+TrustLens is an actively developed prototype, not a production-certified security product. AI-powered detection, hybrid inference, and real-world detection accuracy require further implementation and testing.
+
+## License
+
+To be selected before public release.
